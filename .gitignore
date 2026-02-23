@@ -47,3 +47,6 @@ venv/
 backend/venv/
 __pycache__/
 *.pyc
+
+# IDE workspace
+*.code-workspace
