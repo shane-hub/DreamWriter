@@ -102,4 +102,36 @@ export class NovelService {
     if (!res.ok) throw new Error('Failed to update novel');
     return await res.json();
   }
+
+  static async getNovels() {
+    const res = await fetch(`${this.getApiUrl()}/api/novels`);
+    if (!res.ok) throw new Error('Failed to fetch novels');
+    return await res.json();
+  }
+
+  static async getNovel(id: string) {
+    const res = await fetch(`${this.getApiUrl()}/api/novels/${id}`);
+    if (!res.ok) throw new Error('Failed to fetch novel');
+    return await res.json();
+  }
+
+  static async deleteNovel(id: string) {
+    const res = await fetch(`${this.getApiUrl()}/api/novels/${id}`, {
+      method: 'DELETE'
+    });
+    if (!res.ok) throw new Error('Failed to delete novel');
+    return await res.json();
+  }
+
+  static async getChapters(novelId: string) {
+    const res = await fetch(`${this.getApiUrl()}/api/novels/${novelId}/chapters`);
+    if (!res.ok) throw new Error('Failed to fetch chapters');
+    return await res.json();
+  }
+
+  static async getCharacters(novelId: string) {
+    const res = await fetch(`${this.getApiUrl()}/api/novels/${novelId}/characters`);
+    if (!res.ok) throw new Error('Failed to fetch characters');
+    return await res.json();
+  }
 }

@@ -1,12 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStore } from '@/store';
 import { NovelService } from '@/lib/services/NovelService';
-import { BookOpen, ArrowLeft, Loader2, Save, Play, Download, Sparkles } from 'lucide-react';
+import { BookOpen, ArrowLeft, Loader2, Save, Play, Download, Sparkles, FileText, FileDown } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
-export default function HardcoreMode() {
+export default function HardcoreModePage() {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <HardcoreMode />
+    </React.Suspense>
+  );
+}
+
+function HardcoreMode() {
   const store = useStore();
 
   // Form State
@@ -23,6 +32,35 @@ export default function HardcoreMode() {
   const [loading, setLoading] = useState(false);
   const [loadingChapter, setLoadingChapter] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  const searchParams = useSearchParams();
+  const editId = searchParams.get('id');
+
+  useEffect(() => {
+    if (editId) {
+      loadExistingNovel(editId);
+    }
+  }, [editId]);
+
+  const loadExistingNovel = async (id: string) => {
+    try {
+      setLoading(true);
+      const novel = await NovelService.getNovel(id);
+      setNovelId(novel.id);
+      setTopic(novel.title);
+      setGenre(novel.genre);
+      setOutline(novel.outline);
+      setCharacters(novel.description || '');
+
+      const chaptersData = await NovelService.getChapters(id);
+      setChapters(chaptersData || []);
+    } catch (err) {
+      console.error('Failed to load novel', err);
+      alert('无法加载小说数据');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Hardcore Step 1: Generate Outline
   const handleGenerateOutline = async () => {
@@ -96,14 +134,22 @@ export default function HardcoreMode() {
     }
   };
 
-  const handleExportTxt = () => {
+  const handleExport = (format: 'txt' | 'md') => {
     if (chapters.length === 0) return alert('没有可导出的章节');
-    const text = chapters.map(ch => `# ${ch.title}\n\n${ch.content}\n\n`).join('\n');
+
+    let text = '';
+    if (format === 'md') {
+      text = `# ${topic || '未命名小说'}\n\n## 大纲设定\n${outline}\n\n## 角色设定\n${characters}\n\n`;
+      text += chapters.map(ch => `### ${ch.title}\n\n${ch.content}\n\n`).join('\n');
+    } else {
+      text = chapters.map(ch => `${ch.title}\n\n${ch.content}\n\n`).join('\n');
+    }
+
     const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${topic || '未命名小说'}.txt`;
+    a.download = `${topic || '未命名小说'}.${format}`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -193,9 +239,14 @@ export default function HardcoreMode() {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-semibold">本书目录 ({chapters.length} 章)</h2>
                 {chapters.length > 0 && (
-                  <button onClick={handleExportTxt} className="text-zinc-500 hover:text-primary flex items-center gap-1 text-sm">
-                    <Download className="w-4 h-4" /> 导出TXT
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => handleExport('txt')} className="text-zinc-500 hover:text-primary flex items-center gap-1 text-sm bg-zinc-100 dark:bg-zinc-800 px-2 py-1.5 rounded-md">
+                      <FileText className="w-4 h-4" /> 导出TXT
+                    </button>
+                    <button onClick={() => handleExport('md')} className="text-zinc-500 hover:text-accent flex items-center gap-1 text-sm bg-zinc-100 dark:bg-zinc-800 px-2 py-1.5 rounded-md">
+                      <FileDown className="w-4 h-4" /> 导出MD
+                    </button>
+                  </div>
                 )}
               </div>
               <div className="flex-1 overflow-y-auto space-y-4 pr-2">

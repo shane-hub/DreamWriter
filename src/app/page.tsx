@@ -18,8 +18,14 @@ export default function Home() {
   return (
     <main className="min-h-screen relative overflow-hidden flex flex-col items-center justify-center p-6">
 
-      {/* Top right settings button */}
-      <div className="absolute top-6 right-6 z-10">
+      {/* Top right buttons */}
+      <div className="absolute top-6 right-6 z-10 flex items-center gap-3">
+        <Link href="/library">
+          <button className="glass-panel p-3 rounded-2xl hover:bg-white/60 dark:hover:bg-zinc-800/60 transition-all flex items-center gap-2 text-zinc-600 dark:text-zinc-300">
+            <BookOpen className="w-5 h-5" />
+            <span className="font-medium hidden sm:inline">我的书架</span>
+          </button>
+        </Link>
         <button
           onClick={() => setIsSettingsOpen(true)}
           className="glass-panel p-3 rounded-2xl hover:bg-white/60 dark:hover:bg-zinc-800/60 transition-all flex items-center gap-2 text-zinc-600 dark:text-zinc-300"
