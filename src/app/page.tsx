@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Settings2, Sparkles, Feather } from 'lucide-react';
+import { BookOpen, Settings2, Sparkles, Feather, Film } from 'lucide-react';
 import { useStore } from '@/store';
 import { SettingsModal } from '@/components/SettingsModal';
 import Link from 'next/link';
@@ -62,7 +62,7 @@ export default function Home() {
           )}
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           <Link href="/simple" passHref>
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -91,8 +91,8 @@ export default function Home() {
 
           <Link href="/hardcore" passHref>
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               className="group h-full glass rounded-3xl p-8 cursor-pointer hover:border-accent/50 hover:shadow-2xl hover:shadow-accent/20 transition-all duration-300 relative overflow-hidden"
             >
@@ -111,6 +111,32 @@ export default function Home() {
 
               <div className="flex items-center text-accent font-medium group-hover:translate-x-2 transition-transform">
                 进入工作台 &rarr;
+              </div>
+            </motion.div>
+          </Link>
+
+          <Link href="/studio" passHref>
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="group h-full glass rounded-3xl p-8 cursor-pointer hover:border-indigo-500/50 hover:shadow-2xl hover:shadow-indigo-500/20 transition-all duration-300 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity transform group-hover:scale-110 duration-500">
+                <Film className="w-32 h-32 text-indigo-500" />
+              </div>
+
+              <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-6">
+                <Film className="w-7 h-7 text-indigo-500" />
+              </div>
+              <h2 className="text-3xl font-bold mb-4 text-zinc-800 dark:text-zinc-100">视频流短剧</h2>
+              <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8">
+                不仅限于文字！<br />
+                提取小说剧本，接入火宝引擎 AI 生成分镜、角色，一键转为语音动态视频短剧。
+              </p>
+
+              <div className="flex items-center text-indigo-500 font-medium group-hover:translate-x-2 transition-transform">
+                进入短剧演播室 &rarr;
               </div>
             </motion.div>
           </Link>

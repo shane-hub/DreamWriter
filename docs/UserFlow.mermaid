@@ -1,0 +1,28 @@
+```mermaid
+graph TD
+    A([用户打开 DreamWriter]) --> B{配置了 API Key 吗？}
+    B -- 否 --> C[前往设置面板配置 API Key<br>例如 Gemini 1.5 Pro]
+    C --> D
+    B -- 是 --> D[进入 Video Studio 模块]
+
+    subgraph 阶段1: 剧本解析
+        D --> E[粘贴小说正文或大纲]
+        E --> F[点击 AI 一键提取分镜]
+        F --> G(后端调用大模型进行剧情拆解)
+        G --> H[返回并在前端渲染分镜卡片表]
+    end
+
+    subgraph 阶段2: 资产生成与人工干预
+        H --> I{用户审核分镜卡片}
+        I -- 感觉台词或Prompt不好 --> J[手动编辑卡片设定]
+        J --> K[单张测试生成(文生图)]
+        I -- 满意 --> L[一键生成全量分镜资产]
+    end
+
+    subgraph 阶段3: 视频管线合成
+        L --> M[后端拉起 FFmpeg 组装队列]
+        M --> N(前端轮询/SSE 接收合成进度)
+        N --> O([生成最终短剧 MP4 视频])
+        O --> P[用户直接在线预览或下载]
+    end
+```

@@ -8,9 +8,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 const SUPPORTED_MODELS = [
     { id: 'gpt-5.2', name: 'OpenAI (gpt-5.2)', url: 'https://api.openai.com/v1' },
     { id: 'gpt-4o', name: 'OpenAI (gpt-4o)', url: 'https://api.openai.com/v1' },
+    { id: 'gemini-1.5-pro', name: 'Google (Gemini 1.5 Pro)', url: 'https://generativelanguage.googleapis.com/v1beta/openai/' },
     { id: 'gemini-3.1-pro', name: 'Google (Gemini 3.1 Pro)', url: 'https://generativelanguage.googleapis.com/v1beta/openai/' },
     { id: 'gemini-3.1-flash', name: 'Google (Gemini 3.1 Flash)', url: 'https://generativelanguage.googleapis.com/v1beta/openai/' },
-    { id: 'claude-3-5-sonnet-20241022', name: 'Anthropic (Claude 3.5 Sonnet)', url: 'https://api.anthropic.com/v1' },
+    { id: 'claude-3-5-sonnet-20241022', name: 'Anthropic (Claude 3.5 Sonnet v2)', url: 'https://api.anthropic.com/v1' },
+    { id: 'claude-3-5-sonnet-20240620', name: 'Anthropic (Claude 3.5 Sonnet)', url: 'https://api.anthropic.com/v1' },
     { id: 'claude-3-haiku-20240307', name: 'Anthropic (Claude 3 Haiku)', url: 'https://api.anthropic.com/v1' },
     { id: 'deepseek-chat', name: 'DeepSeek (deepseek-chat)', url: 'https://api.deepseek.com/v1' },
     { id: 'deepseek-reasoner', name: 'DeepSeek (deepseek-reasoner)', url: 'https://api.deepseek.com/v1' },
@@ -81,7 +83,7 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                     value={apiKey}
                                     onChange={(e) => setApiKey(e.target.value)}
                                     placeholder="sk-..."
-                                    className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white/50 dark:bg-zinc-900/50 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                                    className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white/50 dark:bg-zinc-900/50 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                                 />
                                 <p className="text-xs text-zinc-500 mt-1.5">
                                     你的 Key 仅存储在本地浏览器，不会上传至任何服务器。
@@ -97,7 +99,7 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                     value={modelUrl}
                                     onChange={(e) => setModelUrl(e.target.value)}
                                     placeholder="https://api.openai.com/v1"
-                                    className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white/50 dark:bg-zinc-900/50 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                                    className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white/50 dark:bg-zinc-900/50 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                                 />
                             </div>
 
@@ -121,7 +123,7 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                             }
                                         }
                                     }}
-                                    className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white/50 dark:bg-zinc-900/50 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all appearance-none cursor-pointer"
+                                    className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white/50 dark:bg-zinc-900/50 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all appearance-none cursor-pointer"
                                 >
                                     {SUPPORTED_MODELS.map(m => (
                                         <option key={m.id} value={m.id} className="dark:bg-zinc-900 dark:text-white">{m.name}</option>
@@ -135,7 +137,7 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                         value={modelName}
                                         onChange={(e) => setModelName(e.target.value)}
                                         placeholder="输入自定义模型名称 (如: Qwen/Qwen1.5-7B-Chat)"
-                                        className="w-full mt-3 px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white/50 dark:bg-zinc-900/50 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                                        className="w-full mt-3 px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white/50 dark:bg-zinc-900/50 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                                     />
                                 )}
                             </div>
@@ -145,7 +147,7 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                     <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">外观主题</span>
                                     <button
                                         onClick={() => store.setTheme(store.theme === 'dark' ? 'light' : 'dark')}
-                                        className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                                        className="p-2 rounded-xl border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
                                     >
                                         {store.theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                                     </button>

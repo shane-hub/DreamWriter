@@ -24,3 +24,35 @@ services:
     depends_on:
       - backend
     restart: always
+
+  huobao-drama:
+    container_name: huobao-drama
+    build:
+      context: ./services/huobao-drama
+      dockerfile: Dockerfile
+    ports:
+      - "5678:5678"
+    volumes:
+      - huobao-data:/app/data
+    environment:
+      - TZ=Asia/Shanghai
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5678/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    networks:
+      - default
+      - huobao-network
+
+volumes:
+  huobao-data:
+    driver: local
+
+networks:
+  huobao-network:
+    driver: bridge
