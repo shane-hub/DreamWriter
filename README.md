@@ -1,62 +1,65 @@
 <h1 align="center">DreamWriter (织梦)</h1>
 
 <p align="center">
-  <strong>🔥 你的私人 AI 爆款网文生成神器 | 极简与硬核双模式 | 纯前端本地存储，隐私至上 🔥</strong>
+  <strong>🔥 你的私人 AI 爆款网文生成神器 & 短剧视频合成引擎 🎬</strong>
 </p>
 
 <p align="center">
   <img alt="License" src="https://img.shields.io/badge/License-MIT-blue.svg" />
   <img alt="Framework" src="https://img.shields.io/badge/Framework-Next.js-black?logo=next.js" />
   <img alt="Data" src="https://img.shields.io/badge/Data-LocalFirst-success" />
+  <img alt="Feature" src="https://img.shields.io/badge/Feature-Video_Studio-purple" />
 </p>
 
 ## ✨ 什么是 DreamWriter
-**DreamWriter** 是一款开源的 AI 网文小说写作辅助工具。完全基于 Web 浏览器运行，支持接入全网主流的大语言模型 (DeepSeek, ChatGPT, Claude, Kimi 等)。无论你是一个只有模糊好点子的“网文小白”，还是有着庞大世界观设定、精确掌控每一章剧情的“资深作者”，DreamWriter 都能极大提升你的内容产出效率！
+**DreamWriter** 是一款开源的 AI 网文小说写作辅助与**一键短剧生成引擎**。
+无论你是一个只想看爽文的“网文小白”，还是想跨界做短剧但苦于没有视频能力的“资深作者”，DreamWriter 都能极大提升你的内容产出效率！借助全新的 **Video Studio** 和底层的 **Huobao Drama Backend**，你现在可以直接将你写出的小说提取分镜，一键生成配音+微动效的 MP4 短剧视频！
 
 ## 🚀 核心特性
 
-- 🎯 **双模式驱动，丰俭由人**
-  - **极简模式**：只想看爽文？输入一句话主题（如：“赛博朋克+诡秘复苏+苟道流”），AI 为你一键包揽大纲生成到正文的连载。
-  - **硬核模式**：真正的生产力工具。提供交互式工作流，允许你打磨**世界观设定**、**人物属性卡**与**章节剧情树**，每一步都让你拥有绝对的掌控权。
-- 🔑 **自带 Key 模式 (BYOK) & 纯本地大模型支持**
-  - 系统核心不收你一分钱。你可以填入自己申请的任何兼容 OpenAI 格式的 API Key (如 DeepSeek, Kimi)。
-  - **100% 支持本地离线模型**：只要你本地运行着 Ollama、LM Studio 等服务，直接在设置中选择“自定义模型”并填入本地 API 地址（如 `http://localhost:11434/v1`），即可实现断网、零成本创作。
-- 🛡️ **前后端全栈架构 & 隐私至上**
-  - DreamWriter 采用 Next.js + Python FastAPI 全栈架构。所有的设定、草稿、API 密钥均安全可控，数据通过 SQLite 自动持久化存在本地，即便离线上网，你的心血和灵感也绝对安全。
-- 🎨 **极致沉浸的创作体验**
-  - 极具现代感的暗黑模式 UI 界面，玻璃拟物化设计和流畅微动画，让码字也成为一种视觉享受。
-- 📤 **多格式一键导出**
-  - 随时将已生成的小说章节导出为 Markdown 或精排版 TXT 文件。
+- 🎯 **双模式网文驱动，丰俭由人**
+  - **极简模式**：只想看爽文？输入一句话主题，AI 为你一键包揽大纲生成到正文的连载。
+  - **硬核模式**：真正的生产力工具。交互式打磨世界观设定、人物属性卡与章节剧情树。
+- 🎬 **【New!】视频工作台 (Video Studio)**
+  - 自动将小说正文解析为带有画面 Prompt 和台词 Dialogue 的结构化分镜脚本。
+  - **一键合成最终视频**：无缝对接底层的 Huobao 引擎，全自动完成生图、配音、FFmpeg 合成，直接在前端出片。
+- 🔑 **自带 Key 模式 (BYOK)**
+  - 你可以填入自己申请的任何兼容 OpenAI 格式的 API Key (如 Gemini 1.5 Pro, DeepSeek, Kimi)。
+  - **支持本地大模型**：配置本地如 `http://localhost:11434/v1` 等端点即可实现零网络成本创作。
+- 🛡️ **微服务全栈架构**
+  - Next.js (前端及小说资产管理) + Go/Python (Huobao 多模态生成服务)。数据通过 SQLite 分级自动持久化存在本地。
+- 🎨 **极致沉浸的创作体验与导出**
+  - 支持暗黑/亮色主题切换。支持随时将小说导出为 Markdown/TXT。
 
-## 🛠️ 快速开始
+## 🛠️ 快速部署与开始
 
-本项目基于 [Next.js](https://nextjs.org/) 开发，采用 React + TailwindCSS(或自定义现代CSS体系) 构建。
+由于集成了强大的本地视频合成能力，推荐使用 Docker Compose 进行一键部署启动。
 
-### 1. 克隆项目
+### 1. 克隆项目 (注意拉取子模块)
 ```bash
-git clone https://github.com/yourusername/DreamWriter.git
+git clone --recursive https://github.com/shane-hub/DreamWriter.git
 cd DreamWriter
 ```
 
-### 2. 安装依赖
+### 2. Docker 一键启动 (推荐)
+```bash
+docker-compose up -d --build
+```
+*这会自动拉起 Frontend (Next.js), Backend (Go/Python 合成引擎) 以及相关数据库资源。*
+
+打开浏览器访问 [http://localhost:3000](http://localhost:3000) 即可！
+
+### (可选) 纯前端网文模式本地开发
+如果你只想二次开发 Next.js 前端的网文部分模块：
 ```bash
 npm install
-# or
-yarn install
-# or
-pnpm install
-```
-
-### 3. 本地启动
-```bash
 npm run dev
 ```
 
-在浏览器打开 [http://localhost:3000](http://localhost:3000) 即可开始你的网文创作之旅。
-
 ## 🤝 贡献说明
 随时欢迎各位开发者提交 Issue 或 Pull Request！我们可以一起来：
-- 增加更多的预设网文提示词（Prompt）流派模版
+- 增加前端视频时间轴编辑器功能
+- 接入更多优秀的开源声音克隆库 (TTS) 和 图生视频库
 - 优化长文本生成的上下文压缩算法与 Token 管理
 
 ## 📄 License
